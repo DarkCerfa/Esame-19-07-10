@@ -1,0 +1,204 @@
+/*
+Il programma attraverso un apposito menù (e sotto menù) dovrà eseguire le seguenti operazioni:
+a) Chiedere se si vuole lavorare su un vettore. Nel caso affermativo, attraverso un sotto menù si possono fare le
+seguenti cose sul vettore stesso:
+1) Inserire da tastiera i valori nel vettore, dopo aver acquisito la sua dimensione (lunghezza) controllando
+che tale valore non sia maggiore di 10.
+2) Trovare il valore massimo tra tutti gli interi presenti nel vettore e stamparlo a video.
+3) Trovare il valore minimo tra tutti gli interi presenti nel vettore e stamparlo a video.
+4) Calcolare il valore medio dei valori interi presenti nel vettore e stamparlo a video.
+5) Ordinare i valori presenti nel vettore in maniera decrescente (utilizzare uno qualsiasi degli algoritmi di
+ordinamento conosciuti). Stampare a video il vettore ordinato.
+6) Uscire dal sotto menù. (Si torna al menù principale).
+b) Calcolare l'elevamento a potenza della base N alla potenza M (NM) dopo averne letto da tastiera i valori.
+Stampare a video il risultato.
+c) Stampare a video il contenuto di un file, dopo averne letto da tastiera il nome.
+d) Uscita dal menù e dal programma.
+*/
+#include <iostream>
+#include <fstream>
+using namespace std;
+void leggi_vettore(int r, int m[]);
+int max_vettore(int r, int v[]);
+int min_vettore(int r, int v[]);
+float media_vettore(int r, int v[]);
+void ordina_vettore(int r, int v[]);
+void stampa_vettore(int r, int v[]);
+int eleva_potenza(int n, int m);
+void stampa_file(char nome[]);
+int main(){
+    char s;
+    int *pi;
+    int h=0;
+    int dim=0;
+    do{
+        do{
+            cout << "\nMENU'\n";
+            cout << "a) Per lavorare sul vettore\n";
+            cout << "b) Per calcolare l'elevamento a potenza\n";
+            cout << "c) Per stampare il contenuto di un file\n";
+            cout << "d) Per uscire\n";
+            cout << "Scelta: ";
+            cin>>s;
+            if(s!='a'&&s!='b'&&s!='c'&&s!='d'){
+                cout<<"lettera non consentita"<<endl;
+            }
+        }while(s!='a'&&s!='b'&&s!='c'&&s!='d');
+            switch(s){
+            case 'a':{
+                cout<<"stai lavorando con il vettore"<<endl;
+                do{
+                cout << "\nSOTTO MENU'\n";
+                cout << "1) Per inserire i numeri nel vettore\n";
+                cout << "2) Per trovare il massimo\n";
+                cout << "3) Per trovare il minimo\n";
+                cout << "4) Per calcolare la media\n";
+                cout << "5) Per ordinare il vettore\n";
+                cout << "6) Per uscire dal Sotto menu'\n";
+                cout << "Scelta: ";
+                cin>>h;
+                switch(h){
+                case 1:{
+                do{
+                    cout<<"inserisci la dimensione del vettore"<<endl;
+                    cin>>dim;
+                    if(dim<1){
+                        cout<<"la dimensione del vettore deve essere superiore a 0"<<endl;
+                    }
+                    if(dim>10){
+                        cout<<"non puoi inserire un numero superiore di 10"<<endl;
+                    }
+                }while(dim<1||dim>10);
+                    pi=new int [dim];
+                    leggi_vettore(dim,pi);
+                break;
+                }
+                case 2:{
+                    cout<<"il numero massimo del vettore è "<<max_vettore(dim,pi);
+                break;
+                }
+                case 3:{
+                    cout<<"il numero minore del vettore è "<<min_vettore(dim,pi);
+                break;
+                }
+                case 4:{
+                    cout<<"la media dei numeri contenuti nel vettore è "<<media_vettore(dim,pi);
+                break;
+                }
+                case 5:{
+                    ordina_vettore(dim,pi);
+                    stampa_vettore(dim,pi);
+                break;
+                }
+                case 6:{
+                break;
+                }
+                default:{
+                    cout<<"numero non consentito"<<endl;
+                break;
+                }
+                };
+                }while(h!=6);
+                break;
+                }
+                case 'b':{
+                    int base=0;
+                    int numer=0;
+                    cout<<"elevamo a potenza"<<endl;
+                    cout<<"inserisci la base n"<<endl;
+                    cin>>base;
+                    cout<<"inserisci la potenza"<<endl;
+                    cin>>numer;
+                    cout<<"la sua potenza è "<<eleva_potenza(base,numer);
+                break;
+                }
+                case 'c':{
+                    char nome[20];
+                    cout<<"stampa su file"<<endl;
+                    cout<<"inserisci il nome del file da leggere"<<endl;
+                    cin>>nome;
+                    stampa_file(nome);
+                break;
+                }
+                };
+            }while(s!='d');
+}
+
+void leggi_vettore(int r, int m[]){
+int val=0;
+for(int i=0;i<r;i++){
+    cout<<"inserisci il valore "<< i <<" nel vettore"<<endl;
+    cin>>val;
+    m[i]=val;
+}
+}
+
+int max_vettore(int r, int v[]){
+int temp=0;
+for(int i=0;i<r;i++){
+    if(v[i]>temp){//cicla e controlla che non sia maggiore(all inizio controlla se maggiore di 0)
+        temp=v[i];
+    }
+}
+return temp;
+}
+
+int min_vettore(int r, int v[]){
+    int temp;
+for(int i=0;i<r;i++){
+    if(i==0){//all inizio della funzione si salva il primo valore per poi nel prossimo ciclo controllare che sia il piu piccolo
+        temp=v[i];
+    }
+    if(v[i]<temp)
+        temp=v[i];
+}
+return temp;
+}
+
+float media_vettore(int r, int v[]){
+float temp=0,med=0;
+for(int i=0;i<r;i++){
+    temp+=v[i];
+}
+med=temp/r;
+return med;
+}
+
+void ordina_vettore(int r, int v[]){
+    int app=0;
+for(int i=0;i<r;i++){
+    for(int j=i+1;j<r;j++){//indice j è uguale a i+1
+        if(v[i]>=v[j]){
+            app=v[j];
+            v[j]=v[i];
+            v[i]=app;
+        }
+    }
+}
+}
+
+void stampa_vettore(int r, int v[]){
+for(int i=0;i<r;i++){
+    cout<<v[i]<<endl;
+}
+}
+
+int eleva_potenza(int n, int m){
+    int pote=1;
+for(int i=0;i<m;i++){
+    pote*=n;//cicla fino al valore della potenza e moltiplica n*pote
+}
+return pote;
+}
+
+void stampa_file(char nome[]){
+fstream input;
+char parola;
+input.open(nome,ios::in);
+while(input.get(parola)){
+    cout<<parola;
+}
+input.close();
+}
+
+//Coded by DarkCerfa
